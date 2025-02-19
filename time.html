@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time | Talbi Systems</title>
+      <link type="image/png" sizes="40x40" rel="icon" href="favicon.png">
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #a8d0e6; /* Light blue background */
+      font-family: Arial, sans-serif;
+      text-align: center;
+      position: relative; /* For positioning the logo and footer */
+    }
+
+    .clock {
+      font-size: 100px;
+      color: white; /* White text for the clock */
+      text-shadow: 0 0 20px #00aaff, 0 0 40px #00aaff; /* Glowing effect in blue */
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 20px;
+      color: white;
+      text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff; /* Glowing effect for footer */
+    }
+
+    .logo {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 150px; /* Adjust the size of the logo */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo Image -->
+  <img src="logo.png" alt="Talbi Systems Logo" class="logo" size="64x64" >
+
+  <div class="clock" id="clock">00:00:00</div>
+
+  <footer>© 2024 Talbi Systems</footer>
+
+  <script>
+    function updateClock() {
+      const clockElement = document.getElementById('clock');
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock(); // Initial call to display time immediately
+  </script>
+</body>
+</html>
