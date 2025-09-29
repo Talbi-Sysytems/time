@@ -1,67 +1,293 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Time | Talbi Systems</title>
-      <link type="image/png" sizes="40x40" rel="icon" href="favicon.png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Flip Clock</title>
   <style>
-    body {
+    :root{
+      --bg: #3db9ec;
+      --card: #ffffff;
+      --accent: #264e94;
+      --shadow: rgba(0,0,0,0.2);
+      font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    html, body {
+      height: 100%;
       margin: 0;
-      height: 100vh;
+      overflow: hidden;
+    }
+    
+    body {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .clock-container {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      background-color: #a8d0e6; /* Light blue background */
-      font-family: Arial, sans-serif;
+      gap: 20px;
+    }
+
+    .wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .unit-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .digit-label {
       text-align: center;
-      position: relative; /* For positioning the logo and footer */
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-top: 12px;
+      font-weight: 500;
+      height: 20px;
     }
 
-    .clock {
-      font-size: 100px;
-      color: white; /* White text for the clock */
-      text-shadow: 0 0 20px #00aaff, 0 0 40px #00aaff; /* Glowing effect in blue */
+    .flip {
+      width: 80px;
+      height: 120px;
+      perspective: 1000px;
+      position: relative;
     }
 
-    footer {
+    .card {
       position: absolute;
-      bottom: 20px;
-      font-size: 20px;
-      color: white;
-      text-shadow: 0 0 10px #00aaff, 0 0 20px #00aaff; /* Glowing effect for footer */
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease-in-out;
     }
 
-    .logo {
+    .face {
       position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 150px; /* Adjust the size of the logo */
-      height: auto;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--accent);
+      background: var(--card);
+      backface-visibility: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .front {
+      transform: rotateX(0deg);
+      z-index: 2;
+    }
+
+    .back {
+      transform: rotateX(180deg);
+    }
+
+    .flipping .card {
+      animation: flipCard 0.5s ease-in-out forwards;
+    }
+
+    @keyframes flipCard {
+      0% { transform: rotateX(0deg); }
+      100% { transform: rotateX(-180deg); }
+    }
+
+    .colon {
+      font-size: 60px;
+      font-weight: bold;
+      color: var(--accent);
+      margin: 0 5px;
+      line-height: 120px;
+    }
+
+    .unit-label {
+      text-align: center;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 800px) {
+      .wrap {
+        gap: 5px;
+      }
+      
+      .flip {
+        width: 50px;
+        height: 80px;
+      }
+      
+      .face {
+        font-size: 36px;
+      }
+      
+      .colon {
+        font-size: 36px;
+        line-height: 80px;
+      }
+      
+      .digit-label {
+        font-size: 10px;
+      }
+      
+      .unit-label {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Logo Image -->
-  <img src="logo.png" alt="Talbi Systems Logo" class="logo" size="64x64" >
-
-  <div class="clock" id="clock">00:00:00</div>
-
-  <footer>© 2024 Talbi Systems</footer>
+  <div class="clock-container">
+    <div class="wrap">
+      <!-- Hours -->
+      <div class="unit-group">
+        <div class="unit" data-unit="hours-tens">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+        
+        <div class="unit" data-unit="hours-ones">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+      </div>
+      
+      <div class="colon">:</div>
+      
+      <!-- Minutes -->
+      <div class="unit-group">
+        <div class="unit" data-unit="minutes-tens">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+        
+        <div class="unit" data-unit="minutes-ones">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+      </div>
+      
+      <div class="colon">:</div>
+      
+      <!-- Seconds -->
+      <div class="unit-group">
+        <div class="unit" data-unit="seconds-tens">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+        
+        <div class="unit" data-unit="seconds-ones">
+          <div class="flip" data-value="0">
+            <div class="card">
+              <div class="face front">0</div>
+              <div class="face back">0</div>
+            </div>
+          </div>
+          <div class="digit-label"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script>
-    function updateClock() {
-      const clockElement = document.getElementById('clock');
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+    function setStatic(flipEl, text) {
+      const front = flipEl.querySelector('.face.front');
+      const back = flipEl.querySelector('.face.back');
+      front.textContent = text;
+      back.textContent = text;
+      flipEl.dataset.value = text;
     }
 
-    setInterval(updateClock, 1000);
-    updateClock(); // Initial call to display time immediately
+    function doFlip(flipEl, newText) {
+      if (flipEl.dataset.value === newText) return;
+      
+      const back = flipEl.querySelector('.face.back');
+      back.textContent = newText;
+      
+      flipEl.classList.add('flipping');
+
+      setTimeout(() => {
+        setStatic(flipEl, newText);
+        flipEl.classList.remove('flipping');
+      }, 500);
+    }
+
+    // Initialize all flip elements
+    document.querySelectorAll('.flip').forEach(f => setStatic(f, "0"));
+
+    function tick() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+
+      // Update hours (tens and ones)
+      doFlip(document.querySelector('.unit[data-unit="hours-tens"] .flip'), h[0]);
+      doFlip(document.querySelector('.unit[data-unit="hours-ones"] .flip'), h[1]);
+      
+      // Update minutes (tens and ones)
+      doFlip(document.querySelector('.unit[data-unit="minutes-tens"] .flip'), m[0]);
+      doFlip(document.querySelector('.unit[data-unit="minutes-ones"] .flip'), m[1]);
+      
+      // Update seconds (tens and ones)
+      doFlip(document.querySelector('.unit[data-unit="seconds-tens"] .flip'), s[0]);
+      doFlip(document.querySelector('.unit[data-unit="seconds-ones"] .flip'), s[1]);
+    }
+
+    // Initialize and start the clock
+    tick();
+    setTimeout(() => {
+      tick();
+      setInterval(tick, 1000);
+    }, 1000 - (Date.now() % 1000));
   </script>
 </body>
 </html>
